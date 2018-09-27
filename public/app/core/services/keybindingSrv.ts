@@ -4,7 +4,7 @@ import _ from 'lodash';
 import config from 'app/core/config';
 import coreModule from 'app/core/core_module';
 import appEvents from 'app/core/app_events';
-import { encodePathComponent } from 'app/core/utils/location_util';
+import { getExploreUrl } from 'app/core/utils/explore';
 
 import Mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
@@ -200,37 +200,10 @@ export class KeybindingSrv {
       this.bind('x', async () => {
         if (dashboard.meta.focusPanelId) {
           const panel = dashboard.getPanelById(dashboard.meta.focusPanelId);
-
-          let exploreDatasource = await this.datasourceSrv.get(panel.datasource);
-          let exploreTargets = panel.targets;
-
-          // Mixed datasources need to choose only one datasource
-          if (exploreDatasource.meta.id === 'mixed' && exploreTargets) {
-            // Find first explore datasource among targets
-            let mixedExploreDatasource;
-            for (const t of panel.targets) {
-              const datasource = await this.datasourceSrv.get(t.datasource);
-              if (datasource && datasource.meta.explore) {
-                mixedExploreDatasource = datasource;
-                break;
-              }
-            }
-
-            // Add all its targets
-            if (mixedExploreDatasource) {
-              exploreDatasource = mixedExploreDatasource;
-              exploreTargets = exploreTargets.filter(t => t.datasource === mixedExploreDatasource.name);
-            }
-          }
-
-          if (exploreDatasource && exploreDatasource.meta.explore) {
-            const range = this.timeSrv.timeRangeForUrl();
-            const state = {
-              ...exploreDatasource.getExploreState(exploreTargets),
-              range,
-            };
-            const exploreState = encodePathComponent(JSON.stringify(state));
-            this.$timeout(() => this.$location.url(`/explore?state=${exploreState}`));
+          const datasource = await this.datasourceSrv.get(panel.datasource);
+          const url = await getExploreUrl(panel, panel.targets, datasource, this.datasourceSrv, this.timeSrv);
+          if (url) {
+            this.$timeout(() => this.$location.url(url));
           }
         }
       });

@@ -6,7 +6,7 @@ import kbn from 'app/core/utils/kbn';
 import { PanelCtrl } from 'app/features/panel/panel_ctrl';
 import * as rangeUtil from 'app/core/utils/rangeutil';
 import * as dateMath from 'app/core/utils/datemath';
-import { encodePathComponent } from 'app/core/utils/location_util';
+import { getExploreUrl } from 'app/core/utils/explore';
 
 import { metricsTabDirective } from './metrics_tab';
 
@@ -331,37 +331,9 @@ class MetricsPanelCtrl extends PanelCtrl {
   }
 
   async explore() {
-    const range = this.timeSrv.timeRangeForUrl();
-    let exploreDatasource = this.datasource;
-    let exploreTargets = this.panel.targets;
-
-    // Mixed datasources need to choose only one datasource
-    if (this.datasource.meta.id === 'mixed' && exploreTargets) {
-      // Find first explore datasource among targets
-      let mixedExploreDatasource;
-      for (const t of this.panel.targets) {
-        const datasource = await this.datasourceSrv.get(t.datasource);
-        if (datasource && datasource.meta.explore) {
-          mixedExploreDatasource = datasource;
-          break;
-        }
-      }
-
-      // Add all its targets
-      if (mixedExploreDatasource) {
-        exploreDatasource = mixedExploreDatasource;
-        exploreTargets = exploreTargets.filter(t => t.datasource === mixedExploreDatasource.name);
-      }
-    }
-
-    if (exploreDatasource && exploreDatasource.meta.explore) {
-      const state = {
-        ...exploreDatasource.getExploreState(exploreTargets),
-        range,
-      };
-      const exploreState = encodePathComponent(JSON.stringify(state));
-      // Need to defer URL change for unknown reasons
-      this.$timeout(() => this.$location.url(`/explore?state=${exploreState}`), 0);
+    const url = await getExploreUrl(this.panel, this.panel.targets, this.datasource, this.datasourceSrv, this.timeSrv);
+    if (url) {
+      this.$timeout(() => this.$location.url(url));
     }
   }
 
