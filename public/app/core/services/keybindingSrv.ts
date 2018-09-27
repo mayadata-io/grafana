@@ -15,7 +15,14 @@ export class KeybindingSrv {
   timepickerOpen = false;
 
   /** @ngInject */
-  constructor(private $rootScope, private $location, private datasourceSrv, private timeSrv, private contextSrv) {
+  constructor(
+    private $rootScope,
+    private $location,
+    private $timeout,
+    private datasourceSrv,
+    private timeSrv,
+    private contextSrv
+  ) {
     // clear out all shortcuts on route change
     $rootScope.$on('$routeChangeSuccess', () => {
       Mousetrap.reset();
@@ -202,11 +209,10 @@ export class KeybindingSrv {
             // Find first explore datasource among targets
             let mixedExploreDatasource;
             for (const t of panel.targets) {
-              if (!mixedExploreDatasource) {
-                const datasource = await this.datasourceSrv.get(t.datasource);
-                if (datasource && datasource.meta.explore) {
-                  mixedExploreDatasource = datasource;
-                }
+              const datasource = await this.datasourceSrv.get(t.datasource);
+              if (datasource && datasource.meta.explore) {
+                mixedExploreDatasource = datasource;
+                break;
               }
             }
 
@@ -220,11 +226,11 @@ export class KeybindingSrv {
           if (exploreDatasource && exploreDatasource.meta.explore) {
             const range = this.timeSrv.timeRangeForUrl();
             const state = {
-              ...exploreTargets.getExploreState(exploreTargets),
+              ...exploreDatasource.getExploreState(exploreTargets),
               range,
             };
             const exploreState = encodePathComponent(JSON.stringify(state));
-            setTimeout(() => this.$location.url(`/explore?state=${exploreState}`), 0);
+            this.$timeout(() => this.$location.url(`/explore?state=${exploreState}`));
           }
         }
       });

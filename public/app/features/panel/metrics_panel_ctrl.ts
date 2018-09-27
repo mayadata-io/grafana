@@ -326,11 +326,6 @@ class MetricsPanelCtrl extends PanelCtrl {
         icon: 'fa fa-fw fa-rocket',
         shortcut: 'x',
       });
-
-      // Mixed datasources load asynchronously, need to preload instances to have them ready on click
-      if (this.datasource.meta.id === 'mixed') {
-        this.panel.targets.forEach(t => this.datasourceSrv.get(t.datasource));
-      }
     }
     return items;
   }
@@ -345,11 +340,10 @@ class MetricsPanelCtrl extends PanelCtrl {
       // Find first explore datasource among targets
       let mixedExploreDatasource;
       for (const t of this.panel.targets) {
-        if (!mixedExploreDatasource) {
-          const datasource = await this.datasourceSrv.get(t.datasource);
-          if (datasource && datasource.meta.explore) {
-            mixedExploreDatasource = datasource;
-          }
+        const datasource = await this.datasourceSrv.get(t.datasource);
+        if (datasource && datasource.meta.explore) {
+          mixedExploreDatasource = datasource;
+          break;
         }
       }
 
@@ -367,7 +361,7 @@ class MetricsPanelCtrl extends PanelCtrl {
       };
       const exploreState = encodePathComponent(JSON.stringify(state));
       // Need to defer URL change for unknown reasons
-      setTimeout(() => this.$location.url(`/explore?state=${exploreState}`), 0);
+      this.$timeout(() => this.$location.url(`/explore?state=${exploreState}`), 0);
     }
   }
 
