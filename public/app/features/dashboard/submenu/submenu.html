@@ -18,6 +18,8 @@
   <div class="gf-form gf-form--grow">
   </div>
 
+  <gf-time-picker class="gf-timepicker-nav" style="z-index: 100;" dashboard="ctrl.dashboard" ng-if="!ctrl.dashboard.timepicker.hidden"></gf-time-picker>
+  
   <div ng-if="ctrl.dashboard.links.length > 0" >
     <dash-links-container links="ctrl.dashboard.links" class="gf-form-inline"></dash-links-container>
   </div>
