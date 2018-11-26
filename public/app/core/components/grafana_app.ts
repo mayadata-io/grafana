@@ -117,6 +117,11 @@ export function grafanaAppDirective(playlistSrv, contextSrv, $timeout, $rootScop
           appEvents.emit('toggle-kiosk-mode');
         }
 
+        //handle submenu url param
+        if (data.params.submenu) {
+          appEvents.emit('toggle-submenu-mode');
+        }
+
         // check for 'inactive' url param for clean looks like kiosk, but with title
         if (data.params.inactive) {
           body.addClass('user-activity-low');
@@ -134,6 +139,11 @@ export function grafanaAppDirective(playlistSrv, contextSrv, $timeout, $rootScop
       // handle kiosk mode
       appEvents.on('toggle-kiosk-mode', () => {
         body.toggleClass('page-kiosk-mode');
+      });
+
+      //handle submenu mode. It shows the submenu and the time picker and zoom button
+      appEvents.on('toggle-submenu-mode', () => {
+        body.toggleClass('page-submenu-mode');
       });
 
       // handle in active view state class
