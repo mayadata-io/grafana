@@ -37,6 +37,7 @@ type DatabaseConfig struct {
 	MaxOpenConn                                int
 	MaxIdleConn                                int
 	ConnMaxLifetime                            int
+	CacheMode                                  string
 }
 
 var (
@@ -152,7 +153,7 @@ func getEngine() (*xorm.Engine, error) {
 			DbCfg.Path = filepath.Join(setting.DataPath, DbCfg.Path)
 		}
 		os.MkdirAll(path.Dir(DbCfg.Path), os.ModePerm)
-		cnnstr = "file:" + DbCfg.Path
+		cnnstr = fmt.Sprintf("file:%s?cache=%s&mode=rwc", DbCfg.Path, DbCfg.CacheMode)
 	default:
 		return nil, fmt.Errorf("Unknown database type: %s", DbCfg.Type)
 	}
@@ -222,6 +223,7 @@ func LoadConfig() {
 	DbCfg.ClientCertPath = sec.Key("client_cert_path").String()
 	DbCfg.ServerCertName = sec.Key("server_cert_name").String()
 	DbCfg.Path = sec.Key("path").MustString("data/grafana.db")
+	DbCfg.CacheMode = sec.Key("cache_mode").MustString("private")
 }
 
 var (
