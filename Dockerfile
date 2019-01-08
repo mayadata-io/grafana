@@ -74,8 +74,8 @@ COPY --from=0 /go/src/github.com/grafana/grafana/bin/linux-amd64/grafana-server 
 COPY --from=1 /usr/src/app/public ./public
 COPY --from=1 /usr/src/app/tools ./tools
 COPY tools/phantomjs/render.js ./tools/phantomjs/render.js
-#COPY /data/plugins /var/lib/grafana/plugins
-COPY data/plugins ./tools/phantomjs/plugins
+COPY ./data/plugins /var/lib/grafana/plugins
+#COPY data/plugins ./tools/phantomjs/plugins
 EXPOSE 3000
 
 COPY ./packaging/docker/run.sh /run.sh
