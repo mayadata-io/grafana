@@ -76,7 +76,7 @@ COPY --from=1 /usr/src/app/tools ./tools
 COPY tools/phantomjs/render.js ./tools/phantomjs/render.js
 COPY ./data/plugins/grafana-graph-alternative /var/lib/grafana/plugins/grafana-graph-alternative
 COPY  ./packaging/docker/run.sh /var/lib/grafana/plugins/grafana-graph-alternative
-#COPY data/plugins ./tools/phantomjs/plugins
+COPY data/plugins ./plugins
 EXPOSE 3000
 
 COPY ./packaging/docker/run.sh /run.sh
