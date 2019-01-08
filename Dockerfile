@@ -76,9 +76,9 @@ COPY --from=1 /usr/src/app/tools ./tools
 COPY tools/phantomjs/render.js ./tools/phantomjs/render.js
 WORKDIR $GF_PATHS_PLUGINS
 COPY ./data/plugins /var/lib/grafana/plugins/grafana-graph-alternative && \
-    chown -R grafana:grafana "/var/lib/grafana/plugins/grafana-graph-alternative"
+    chown -R grafana:grafana "$GF_PATHS_PLUGINS/grafana-graph-alternative"
 COPY ./data/plugins/grafana-piechart-panel-5f249d5 /var/lib/grafana/plugins/grafana-piechart-panel-5f249d5 && \
-    chown -R grafana:grafana "/var/lib/grafana/plugins/grafana-piechart-panel-5f249d5"
+    chown -R grafana:grafana "$GF_PATHS_PLUGINS/grafana-piechart-panel-5f249d5"
 WORKDIR $GF_PATHS_HOME
 EXPOSE 3000
 
