@@ -81,14 +81,14 @@ pipeline {
         success {
             echo 'This will run only if successful'
             //slackSend channel: '#maya-chatops',
-                   color: 'good',
-                   message: "The pipeline ${currentBuild.fullDisplayName} completed successfully :dance: :thumbsup: "
+                   //color: 'good',
+                  // message: "The pipeline ${currentBuild.fullDisplayName} completed successfully :dance: :thumbsup: "
         }
         failure {
             echo 'This will run only if failed'
             //slackSend channel: '#maya-chatops',
-                  color: 'RED',
-                  message: "The pipeline ${currentBuild.fullDisplayName} failed. :scream_cat: :japanese_goblin: "
+                  //color: 'RED',
+                  //message: "The pipeline ${currentBuild.fullDisplayName} failed. :scream_cat: :japanese_goblin: "
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
