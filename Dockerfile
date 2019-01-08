@@ -82,5 +82,5 @@ EXPOSE 3000
 
 COPY ./packaging/docker/run.sh /run.sh
 
-USER grafana
+#USER grafana
 ENTRYPOINT [ "/run.sh" ]
