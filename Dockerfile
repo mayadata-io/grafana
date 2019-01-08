@@ -37,8 +37,8 @@ RUN ./node_modules/.bin/grunt build
 # Final container
 FROM debian:stretch-slim
 
-ARG GF_UID="104"
-ARG GF_GID="104"
+ARG GF_UID="472"
+ARG GF_GID="472"
 
 ENV PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     GF_PATHS_CONFIG="/etc/grafana/grafana.ini" \
@@ -75,8 +75,10 @@ COPY --from=1 /usr/src/app/public ./public
 COPY --from=1 /usr/src/app/tools ./tools
 COPY tools/phantomjs/render.js ./tools/phantomjs/render.js
 WORKDIR $GF_PATHS_PLUGINS
-COPY ./data/plugins /var/lib/grafana/plugins/grafana-graph-alternative
-COPY ./data/plugins/grafana-piechart-panel-5f249d5 /var/lib/grafana/plugins/grafana-piechart-panel-5f249d5 
+COPY ./data/plugins /var/lib/grafana/plugins/grafana-graph-alternative && \
+    chown -R grafana:grafana "/var/lib/grafana/plugins/grafana-graph-alternative"
+COPY ./data/plugins/grafana-piechart-panel-5f249d5 /var/lib/grafana/plugins/grafana-piechart-panel-5f249d5 && \
+    chown -R grafana:grafana "/var/lib/grafana/plugins/grafana-piechart-panel-5f249d5"
 WORKDIR $GF_PATHS_HOME
 EXPOSE 3000
 
