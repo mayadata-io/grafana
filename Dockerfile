@@ -45,7 +45,7 @@ ENV PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bi
     GF_PATHS_DATA="/var/lib/grafana" \
     GF_PATHS_HOME="/usr/share/grafana" \
     GF_PATHS_LOGS="/var/log/grafana" \
-    GF_PATHS_PLUGINS="/var/lib/grafana/plugins" \
+    GF_PATHS_PLUGINS="/opt/grafana-plugins" \
     GF_PATHS_PROVISIONING="/etc/grafana/provisioning"
 
 WORKDIR $GF_PATHS_HOME
@@ -74,7 +74,7 @@ COPY --from=0 /go/src/github.com/grafana/grafana/bin/linux-amd64/grafana-server 
 COPY --from=1 /usr/src/app/public ./public
 COPY --from=1 /usr/src/app/tools ./tools
 COPY tools/phantomjs/render.js ./tools/phantomjs/render.js
-COPY data/plugins ./plugins
+COPY data/plugins /opt/grafana-plugins
 EXPOSE 3000
 
 COPY ./packaging/docker/run.sh /run.sh
