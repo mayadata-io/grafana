@@ -24,7 +24,7 @@ pipeline {
 
 		    echo "Checked out branch: ${env.BRANCH_NAME}"
 
-                    if (env.BRANCH_NAME == 'staging-mo-grafana' || env.BRANCH_NAME == 'mo-grafana' || env.BRANCH_NAME.startsWith('alpha-r')) {
+                    if (env.BRANCH_NAME == 'staging-mo-grafana' || env.BRANCH_NAME == 'prod-mo-grafana' || env.BRANCH_NAME.startsWith('alpha-r')) {
                         echo 'I only execute on the ${env.BRANCH_NAME} branch'
 			            DOCKER_IMAGE = docker.build("${ORG}/${REPO}:${env.BRANCH_NAME}-${GIT_SHA}")
                     } else {
@@ -41,7 +41,7 @@ pipeline {
 		    script {
 		        echo "Checked out build number: ${env.BUILD_NUMBER}"
 		        docker.withRegistry('https://registry.hub.docker.com', 'ddc3fdf7-5611-4d47-a8ab-d0ea7624671a') {
-                            if (env.BRANCH_NAME == 'staging-mo-grafana' || env.BRANCH_NAME == 'mo-grafana' || env.BRANCH_NAME.startsWith('alpha-r')) {
+                            if (env.BRANCH_NAME == 'staging-mo-grafana' || env.BRANCH_NAME == 'prod-mo-grafana' || env.BRANCH_NAME.startsWith('alpha-r')) {
 		                echo "Pushing the image with the tag..."
                                 sh "docker login --username=mayadata --password=MayaDocker@123 && docker push ${ORG}/${REPO}:${BRANCH_NAME}-${GIT_SHA}"
 				//DOCKER_IMAGE.push()
@@ -80,15 +80,15 @@ pipeline {
         }
         success {
             echo 'This will run only if successful'
-            slackSend channel: '#maya-chatops',
-                   color: 'good',
-                   message: "The pipeline ${currentBuild.fullDisplayName} completed successfully :dance: :thumbsup: "
+            //slackSend channel: '#maya-chatops',
+                   //color: 'good',
+                  // message: "The pipeline ${currentBuild.fullDisplayName} completed successfully :dance: :thumbsup: "
         }
         failure {
             echo 'This will run only if failed'
-            slackSend channel: '#maya-chatops',
-                  color: 'RED',
-                  message: "The pipeline ${currentBuild.fullDisplayName} failed. :scream_cat: :japanese_goblin: "
+            //slackSend channel: '#maya-chatops',
+                  //color: 'RED',
+                  //message: "The pipeline ${currentBuild.fullDisplayName} failed. :scream_cat: :japanese_goblin: "
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
