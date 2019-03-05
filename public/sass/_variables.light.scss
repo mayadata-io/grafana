@@ -30,14 +30,14 @@ $white: #fff;
 
 // Accent colors
 // -------------------------
-$blue: #61c2f2;
+$blue: #0063ff;
 $blue-dark: #0083b3;
-$green: #3aa655;
-$red: #d44939;
-$yellow: #ff851b;
-$orange: #ff7941;
-$pink: #e671b8;
-$purple: #9954bb;
+$green: #03a678;
+$red: #d83544;
+$yellow: #f8bb00;
+$orange: #f26d00;
+$pink: #e3147c;
+$purple: #b602ff;
 $variable: $blue;
 
 $brand-primary: $orange;
@@ -49,9 +49,9 @@ $query-blue: $blue-dark;
 
 // Status colors
 // -------------------------
-$online: #01a64f;
-$warn: #f79520;
-$critical: #ec2128;
+$online: #03a678;
+$warn: #f26d00;
+$critical: #d83544;
 
 // Scaffolding
 // -------------------------
@@ -298,9 +298,9 @@ $error-text-color: lighten($red, 10%);
 $success-text-color: lighten($green, 10%);
 $info-text-color: $blue;
 
-$alert-error-bg: linear-gradient(90deg, #d44939, #e04d3d);
-$alert-success-bg: linear-gradient(90deg, #3aa655, #47b274);
-$alert-warning-bg: linear-gradient(90deg, #d44939, #e04d3d);
+$alert-error-bg: linear-gradient(90deg, #d83544, #d83544);
+$alert-success-bg: linear-gradient(90deg, #03a678, #03a678);
+$alert-warning-bg: linear-gradient(90deg, #d83544, #d83544);
 $alert-info-bg: $blue-dark;
 
 // popover
@@ -339,12 +339,12 @@ $collapse-box-body-error-border: $red;
 
 // json explorer
 $json-explorer-default-color: black;
-$json-explorer-string-color: green;
-$json-explorer-number-color: blue;
-$json-explorer-boolean-color: red;
+$json-explorer-string-color: #03a678;
+$json-explorer-number-color: #0063ff;
+$json-explorer-boolean-color: #d83544;
 $json-explorer-null-color: #855a00;
 $json-explorer-undefined-color: rgb(202, 11, 105);
-$json-explorer-function-color: #ff20ed;
+$json-explorer-function-color: #e3147c;
 $json-explorer-rotate-time: 100ms;
 $json-explorer-toggler-opacity: 0.6;
 $json-explorer-toggler-color: #45376f;
