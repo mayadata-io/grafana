@@ -64,7 +64,7 @@ pipeline {
                         // Deploy to production cluster
                         sh "ssh -i ${PROD_KEYPATH} production@${CONTROL_NODE} \" /home/production/install.sh maya-grafana \"${env.BRANCH_NAME}-${GIT_SHA}\"\""
                     } else {
-                        echo "Not sure what to do with this branch. So nto deploying. Mya be dev branch ?"
+                        echo "Not sure what to do with this branch. So not deploying. May be dev branch ?"
                     }
                 }
              }
