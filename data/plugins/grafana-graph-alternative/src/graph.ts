@@ -298,6 +298,9 @@ function graphDirective(timeSrv, popoverSrv, contextSrv) {
 
       function buildFlotOptions(panel) {
         let gridColor = '#c8c8c8';
+        if (config.bootData.user.lightTheme === true) {
+          gridColor = '#a1a1a1';
+        }
         // let gridColor = '#a1a1a1';
         const stack = panel.stack ? true : null;
         let options = {
