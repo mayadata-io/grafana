@@ -1,8 +1,8 @@
 def ORG = "mayadata"
-//def STAGING_KEYPATH="~jenkins/.ssh/id_rsa_control_node_staging"
-//def PROD_KEYPATH="~jenkins/.ssh/id_rsa_control_node_production"
+def STAGING_KEYPATH="~jenkins/.ssh/id_rsa_control_node_staging"
+def PROD_KEYPATH="~jenkins/.ssh/id_rsa_control_node_production"
 //def PREPROD_KEYPATH="~jenkins/.ssh/id_rsa_control_node_preproduction"
-//def CONTROL_NODE="35.225.61.42"
+def CONTROL_NODE="35.225.61.42"
 def REPO = "maya-grafana"
 def DOCKER_HUB_REPO = "https://index.docker.io/v1/"
 def DOCKER_IMAGE = ""
@@ -53,25 +53,22 @@ pipeline {
 	    }
          }
 
-/*         stage('Deploy on the related k8s cluster') {
+        stage('Deploy on the related k8s cluster') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'staging') {
+                    if (env.BRANCH_NAME == 'staging-mo-grafana') {
                         // Deploy to staging cluster
                         echo "${env.BRANCH_NAME}-${GIT_SHA}"
-                        sh "ssh -i ${STAGING_KEYPATH} staging@${CONTROL_NODE} \" /home/staging/install.sh chat-server \"${env.BRANCH_NAME}-${GIT_SHA}\"\""
-                    } else if (env.BRANCH_NAME == 'master') {
+                        sh "ssh -i ${STAGING_KEYPATH} staging@${CONTROL_NODE} \" /home/staging/install.sh maya-grafana \"${env.BRANCH_NAME}-${GIT_SHA}\"\""
+                    } else if (env.BRANCH_NAME == 'prod-mo-grafana') {
                         // Deploy to production cluster
-                        sh "ssh -i ${PROD_KEYPATH} production@${CONTROL_NODE} \" /home/production/install.sh chat-server \"${env.BRANCH_NAME}-${GIT_SHA}\"\""
-                    } else if(env.BRANCH_NAME.startsWith('alpha-r') || env.BRANCH_NAME == 'release') {
-                        // Deploy to pre-production cluster
-                        sh "ssh -i ${PREPROD_KEYPATH} preproduction@${CONTROL_NODE} \" /home/preproduction/install.sh chat-server \"${env.BRANCH_NAME}-${GIT_SHA}\"\""
+                        sh "ssh -i ${PROD_KEYPATH} production@${CONTROL_NODE} \" /home/production/install.sh maya-grafana \"${env.BRANCH_NAME}-${GIT_SHA}\"\""
                     } else {
-                        echo "Not sure what to do with this branch. So nto deploying. Mya be dev branch ?"
+                        echo "Not sure what to do with this branch. So not deploying. May be dev branch ?"
                     }
                 }
              }
-         } */
+         } 
     } 
 
     post {
@@ -80,15 +77,15 @@ pipeline {
         }
         success {
             echo 'This will run only if successful'
-            //slackSend channel: '#maya-chatops',
-                   //color: 'good',
-                  // message: "The pipeline ${currentBuild.fullDisplayName} completed successfully :dance: :thumbsup: "
+            slackSend channel: '#Jenkins-builds',
+            color: 'good',
+            message: "The pipeline ${currentBuild.fullDisplayName} completed successfully :dance: :thumbsup: "
         }
         failure {
             echo 'This will run only if failed'
-            //slackSend channel: '#maya-chatops',
-                  //color: 'RED',
-                  //message: "The pipeline ${currentBuild.fullDisplayName} failed. :scream_cat: :japanese_goblin: "
+            slackSend channel: '#Jenkins-builds',
+            color: 'RED',
+            message: "The pipeline ${currentBuild.fullDisplayName} failed. :scream_cat: :japanese_goblin: "
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
