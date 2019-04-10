@@ -6,9 +6,28 @@ def ORG = "mayadata"
 def REPO = "maya-grafana"
 def DOCKER_HUB_REPO = "https://index.docker.io/v1/"
 def DOCKER_IMAGE = ""
+env.user="atulabhi"
+env.pass="ka879707"
 pipeline {
     agent any
     stages {
+        stage('Version Update') {
+            steps {
+            echo "Workspace dir is ${pwd()}"
+            script {
+                if (env.BRANCH_NAME == 'prod-mo-grafana'){
+                  BN = sh(
+                    returnStdout: true,
+                    script: "./version_override ${REPO}"
+                  ).trim()
+                echo "${BN}"
+                echo "This image will be tagged with ${BN}"
+              }else {
+                echo "This is not a prod-mo-grafana branch, tagging skipped!!" 
+              } 
+           }
+        }
+      }
         stage('Build') {
             steps {
 	        script {
@@ -24,54 +43,65 @@ pipeline {
 
 		    echo "Checked out branch: ${env.BRANCH_NAME}"
 
-                    if (env.BRANCH_NAME == 'staging-mo-grafana' || env.BRANCH_NAME == 'prod-mo-grafana' || env.BRANCH_NAME.startsWith('alpha-r')) {
-                        echo 'I only execute on the ${env.BRANCH_NAME} branch'
-			            DOCKER_IMAGE = docker.build("${ORG}/${REPO}:${env.BRANCH_NAME}-${GIT_SHA}")
+                    if (env.BRANCH_NAME == 'prod-mo-grafana') {
+                        echo 'Starting build for ${env.BRANCH_NAME} branch'
+                        DOCKER_IMAGE = docker.build("${ORG}/${REPO}:${BN}")
                     } else {
-                        echo 'I execute on non (master|alpha-rX|staging) branches'
+                        echo 'Starting build for ${env.BRANCH_NAME} branch'
+                        DOCKER_IMAGE = docker.build("${ORG}/${REPO}:${env.BRANCH_NAME}-${GIT_SHA}")
                     }
 
                 }
-	    }
+	         }
         }
-
 
         stage('Push to DockerHub') {
             steps {
 		    script {
 		        echo "Checked out build number: ${env.BUILD_NUMBER}"
 		        docker.withRegistry('https://registry.hub.docker.com', 'ddc3fdf7-5611-4d47-a8ab-d0ea7624671a') {
-                            if (env.BRANCH_NAME == 'staging-mo-grafana' || env.BRANCH_NAME == 'prod-mo-grafana' || env.BRANCH_NAME.startsWith('alpha-r')) {
+                            if (env.BRANCH_NAME == 'staging-mo-grafana') {
 		                echo "Pushing the image with the tag..."
                                 sh "docker login --username=mayadata --password=MayaDocker@123 && docker push ${ORG}/${REPO}:${BRANCH_NAME}-${GIT_SHA}"
 				//DOCKER_IMAGE.push()
-                            } else {
-			        echo "WARNING: Not pushing ks"
-                            }
-		        }
-		    }
-	    }
-         }
+                            } else if (env.BRANCH_NAME == 'prod-mo-grafana') {
+			                    echo "Pushing the image with the tag..."
+                                sh "docker login --username=mayadata --password=MayaDocker@123 && docker push ${ORG}/${REPO}:${BRANCH_NAME}-${BN}"
 
-/*         stage('Deploy on the related k8s cluster') {
+                            }
+		                 }
+		            }
+	             }
+         }
+        stage ('Adding git-tag for prod-mo-grafana') {
+            steps {
+            script {
+                if (env.BRANCH_NAME == 'prod-mo-grafana') {
+                sh '''
+                 git tag -fa "${BN}" -m "Release of ${BN}"
+                 '''
+                sh 'git tag -l'
+                sh 'git push https://${env.user}:${env.pass}@github.com/mayadata-io/maya-grafana.git --tag'
+             }
+          }
+        }
+      }
+        stage('Deploy on the related k8s cluster') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'staging') {
+                    if (env.BRANCH_NAME == 'staging-mo-grafana') {
                         // Deploy to staging cluster
                         echo "${env.BRANCH_NAME}-${GIT_SHA}"
-                        sh "ssh -i ${STAGING_KEYPATH} staging@${CONTROL_NODE} \" /home/staging/install.sh chat-server \"${env.BRANCH_NAME}-${GIT_SHA}\"\""
-                    } else if (env.BRANCH_NAME == 'master') {
+                        sh "ssh -i ${STAGING_KEYPATH} staging@${CONTROL_NODE} \" /home/staging/install.sh maya-grafana \"${env.BRANCH_NAME}-${GIT_SHA}\"\""
+                    } else if (env.BRANCH_NAME == 'prod-mo-grafana') {
                         // Deploy to production cluster
-                        sh "ssh -i ${PROD_KEYPATH} production@${CONTROL_NODE} \" /home/production/install.sh chat-server \"${env.BRANCH_NAME}-${GIT_SHA}\"\""
-                    } else if(env.BRANCH_NAME.startsWith('alpha-r') || env.BRANCH_NAME == 'release') {
-                        // Deploy to pre-production cluster
-                        sh "ssh -i ${PREPROD_KEYPATH} preproduction@${CONTROL_NODE} \" /home/preproduction/install.sh chat-server \"${env.BRANCH_NAME}-${GIT_SHA}\"\""
+                        sh "ssh -i ${PROD_KEYPATH} production@${CONTROL_NODE} \" /home/production/install.sh maya-grafana \"${BN}\"\""
                     } else {
-                        echo "Not sure what to do with this branch. So nto deploying. Mya be dev branch ?"
+                        echo "Not sure what to do with this branch. So not deploying. May be dev branch ?"
                     }
                 }
              }
-         } */
+        }
     } 
 
     post {
@@ -80,15 +110,15 @@ pipeline {
         }
         success {
             echo 'This will run only if successful'
-            //slackSend channel: '#maya-chatops',
-                   //color: 'good',
-                  // message: "The pipeline ${currentBuild.fullDisplayName} completed successfully :dance: :thumbsup: "
+                slackSend channel: '#jenkins-builds',
+                   color: 'good',
+                   message: "The pipeline ${currentBuild.fullDisplayName} completed successfully :dance: :thumbsup: "
         }
         failure {
             echo 'This will run only if failed'
-            //slackSend channel: '#maya-chatops',
-                  //color: 'RED',
-                  //message: "The pipeline ${currentBuild.fullDisplayName} failed. :scream_cat: :japanese_goblin: "
+                slackSend channel: '#jenkins-builds',
+                    color: 'RED',
+                    message: "The pipeline ${currentBuild.fullDisplayName} failed. :scream_cat: :japanese_goblin: "
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
