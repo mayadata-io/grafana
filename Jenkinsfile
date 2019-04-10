@@ -45,7 +45,7 @@ pipeline {
 
                     if (env.BRANCH_NAME == 'prod-mo-grafana') {
                         echo 'Starting build for ${env.BRANCH_NAME} branch'
-                        DOCKER_IMAGE = docker.build("${ORG}/${REPO}:${BN}.")
+                        DOCKER_IMAGE = docker.build("${ORG}/${REPO}:${BN}")
                     } else {
                         echo 'Starting build for ${env.BRANCH_NAME} branch'
                         DOCKER_IMAGE = docker.build("${ORG}/${REPO}:${env.BRANCH_NAME}-${GIT_SHA}")
