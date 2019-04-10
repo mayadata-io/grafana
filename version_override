@@ -1,0 +1,20 @@
+#!/bin/sh
+set -xe
+current_dir=`pwd`
+reponame="$1"
+git clone git@github.com:mayadata-io/maya-io-release.git
+cd maya-io-release/
+fixed_tag=`cat MAJOR.MINOR`
+cd $current_dir
+rm -r maya-io-release/
+git clone git@github.com:mayadata-io/"$reponame".git
+cd "$reponame"/
+var=`git describe --tags $(git rev-list --tags --max-count=1)`
+oldIFS=$IFS 
+IFS="."
+set -- $var
+IFS=$oldIFS  
+new_tag="$fixed_tag""$(($3+1))"     # new_tag here is the updated tag after increment.
+echo $new_tag       # Showing  the output of new_tag variable.
+cd $current_dir
+rm -r $reponame
