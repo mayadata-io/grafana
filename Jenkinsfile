@@ -110,13 +110,13 @@ pipeline {
         }
         success {
             echo 'This will run only if successful'
-                slackSend channel: '#maya-chatops',
+                slackSend channel: '#jenkins-builds',
                    color: 'good',
                    message: "The pipeline ${currentBuild.fullDisplayName} completed successfully :dance: :thumbsup: "
         }
         failure {
             echo 'This will run only if failed'
-                slackSend channel: '#maya-chatops',
+                slackSend channel: '#jenkins-builds',
                     color: 'RED',
                     message: "The pipeline ${currentBuild.fullDisplayName} failed. :scream_cat: :japanese_goblin: "
         }
