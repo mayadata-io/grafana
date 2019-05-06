@@ -88,12 +88,19 @@ func tryLoginUsingRememberCookie(c *m.ReqContext) bool {
 }
 
 func LoginAPIPing(c *m.ReqContext) {
-	if !tryLoginUsingRememberCookie(c) {
-		c.JsonApiErr(401, "Unauthorized", nil)
+	// 		if !tryLoginUsingRememberCookie(c) {
+	// 		c.JsonApiErr(401, "Unauthorized", nil)
+	// 		return
+	// 	}
+
+	// 	c.JsonOK("Logged in")
+	// }
+	//for mayaonline users (never hit /login endpoint so rememember me cookie is not there). validate user if already signed in
+	if c.IsSignedIn || c.IsAnonymous {
+		c.JsonOK("Logged in")
 		return
 	}
-
-	c.JsonOK("Logged in")
+	c.JsonApiErr(401, "Unauthorized", nil)
 }
 
 func LoginPost(c *m.ReqContext, cmd dtos.LoginCommand) Response {
