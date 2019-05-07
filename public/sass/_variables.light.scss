@@ -56,7 +56,7 @@ $critical: #d83544;
 // Scaffolding
 // -------------------------
 
-$body-bg: $gray-7;
+$body-bg: #fff;
 $page-bg: $gray-7;
 $body-color: $gray-1;
 $text-color: $gray-1;
@@ -99,7 +99,8 @@ $component-active-bg: $brand-primary !default;
 // -------------------------
 
 $panel-bg: $white;
-$panel-border-color: $gray-5;
+$panel-border-color: $gray-3;
+$panel-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
 $panel-border: solid 1px $panel-border-color;
 $panel-drop-zone-bg: repeating-linear-gradient(-128deg, $body-bg, $body-bg 10px, $gray-6 10px, $gray-6 20px);
 $panel-header-hover-bg: $gray-6;
@@ -156,8 +157,8 @@ $scrollbarBorder: $gray-4;
 $btn-primary-bg: $brand-primary;
 $btn-primary-bg-hl: lighten($brand-primary, 8%);
 
-$btn-secondary-bg: $blue-dark;
-$btn-secondary-bg-hl: lighten($blue-dark, 4%);
+$btn-secondary-bg: $blue;
+$btn-secondary-bg-hl: $blue;
 
 $btn-success-bg: lighten($green, 3%);
 $btn-success-bg-hl: darken($green, 3%);
@@ -316,7 +317,7 @@ $popover-error-bg: $btn-danger-bg;
 // Tooltips and popovers
 // -------------------------
 $tooltipColor: $popover-help-color;
-$tooltipBackground: $popover-help-bg;
+$tooltipBackground: $gray-1;
 $tooltipArrowWidth: 5px;
 $tooltipArrowColor: $tooltipBackground;
 $tooltipLinkColor: lighten($popover-help-color, 5%);
