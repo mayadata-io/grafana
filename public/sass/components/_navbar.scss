@@ -6,6 +6,7 @@
   padding-right: $spacer;
   display: flex;
   flex-grow: 1;
+  background: $white;
   border-bottom: 1px solid transparent;
   transition-duration: 350ms;
   transition-timing-function: ease-in-out;
@@ -105,14 +106,12 @@
 }
 
 .navbar-button {
-  @include buttonBackground($btn-inverse-bg, $btn-inverse-bg-hl, $btn-inverse-text-color, $btn-inverse-text-shadow);
-
+  background: $gray-000;
   display: inline-block;
   font-weight: $btn-font-weight;
   padding: 6px 11px;
   line-height: 16px;
-  color: $text-muted;
-  border: 1px solid $navbar-button-border;
+  color: $gray-700;
   margin-right: 3px;
   white-space: nowrap;
 
