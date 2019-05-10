@@ -2,10 +2,11 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-content: flex-start;
-  align-items: flex-start;
-
-  margin: 0 0 $panel-margin 0;
+  align-content: center;
+  align-items: center;
+  background: $white;
+  margin: $panel-margin 0 $panel-margin 0;
+  padding: 0 4px;
 }
 
 .annotation-disabled,
@@ -67,10 +68,10 @@
   overflow-y: auto;
   overflow-x: hidden;
   background-color: $dropdownBackground;
-  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: $zindex-typeahead;
-  font-size: $font-size-base;
-  border-radius: 3px 3px 0 0;
+  font-size: $font-size-md;
+  border-radius: 4px;
   border: 1px solid $tight-form-func-bg;
 
   &.multi {
@@ -109,7 +110,7 @@
 .variable-option,
 .variable-options-column-header {
   display: block;
-  padding: 2px 27px 0 8px;
+  padding: 0.25rem 1.5rem;
   position: relative;
   white-space: nowrap;
   min-width: 115px;
@@ -138,7 +139,7 @@
 .variable-option {
   &:hover,
   &.highlighted {
-    background-color: $blue-dark;
+    background-color: $gray-5;
   }
 }
 
