@@ -66,7 +66,7 @@ pipeline {
 				//DOCKER_IMAGE.push()
                             } else if (env.BRANCH_NAME == 'prod-mo-grafana') {
 			                    echo "Pushing the image with the tag..."
-                                sh "docker login --username=mayadata --password=MayaDocker@123 && docker push ${ORG}/${REPO}:${BRANCH_NAME}-${BN}"
+                                sh "docker login --username=mayadata --password=MayaDocker@123 && docker push ${ORG}/${REPO}:${BN}"
 
                             }
 		                 }
