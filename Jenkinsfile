@@ -82,7 +82,7 @@ pipeline {
                  """
                 sh 'git tag -l'
                 sh """
-                 git push https://${env.user}:${env.pass}@github.com/mayadata-io/maya-grafana.git --tag
+                 git push https://${env.user}:${env.pass}@github.com/mayadata-io/grafana.git --tag
                  """
              }
           }
