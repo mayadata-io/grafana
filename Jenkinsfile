@@ -77,11 +77,13 @@ pipeline {
             steps {
             script {
                 if (env.BRANCH_NAME == 'prod-mo-grafana') {
-                sh '''
+                sh """
                  git tag -fa "${BN}" -m "Release of ${BN}"
-                 '''
+                 """
                 sh 'git tag -l'
-                sh 'git push https://${env.user}:${env.pass}@github.com/mayadata-io/maya-grafana.git --tag'
+                sh """
+                 git push https://${env.user}:${env.pass}@github.com/mayadata-io/maya-grafana.git --tag
+                 """
              }
           }
         }
