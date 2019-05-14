@@ -45,10 +45,10 @@ pipeline {
 
                     if (env.BRANCH_NAME == 'prod-mo-grafana') {
                         echo 'Starting build for ${env.BRANCH_NAME} branch'
-                        DOCKER_IMAGE = docker.build("${ORG}/${REPO}:${BN}")
+                        DOCKER_IMAGE = docker.build("${ORG}/maya-${REPO}:${BN}")
                     } else {
                         echo 'Starting build for ${env.BRANCH_NAME} branch'
-                        DOCKER_IMAGE = docker.build("${ORG}/${REPO}:${env.BRANCH_NAME}-${GIT_SHA}")
+                        DOCKER_IMAGE = docker.build("${ORG}/maya-${REPO}:${env.BRANCH_NAME}-${GIT_SHA}")
                     }
 
                 }
@@ -62,11 +62,11 @@ pipeline {
 		        docker.withRegistry('https://registry.hub.docker.com', 'ddc3fdf7-5611-4d47-a8ab-d0ea7624671a') {
                             if (env.BRANCH_NAME == 'staging-mo-grafana') {
 		                echo "Pushing the image with the tag..."
-                                sh "docker login --username=mayadata --password=MayaDocker@123 && docker push ${ORG}/${REPO}:${BRANCH_NAME}-${GIT_SHA}"
+                                sh "docker login --username=mayadata --password=MayaDocker@123 && docker push ${ORG}/maya-${REPO}:${BRANCH_NAME}-${GIT_SHA}"
 				//DOCKER_IMAGE.push()
                             } else if (env.BRANCH_NAME == 'prod-mo-grafana') {
 			                    echo "Pushing the image with the tag..."
-                                sh "docker login --username=mayadata --password=MayaDocker@123 && docker push ${ORG}/${REPO}:${BN}"
+                                sh "docker login --username=mayadata --password=MayaDocker@123 && docker push ${ORG}/maya-${REPO}:${BN}"
 
                             }
 		                 }
