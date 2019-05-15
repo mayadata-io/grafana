@@ -1,0 +1,103 @@
+.outlet-header {
+  margin: 24px 0;
+}
+.outlet-header-bar {
+  margin: 24px 0;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+.outlet-header-navigation {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 4px;
+}
+.outlet-header-navigation .outlet-header-navigation_button {
+  cursor: pointer;
+  color: theme-color('primary');
+  background: none;
+  border: 0;
+  text-decoration: none;
+  padding: 0;
+}
+.outlet-header-navigation .outlet-header-navigation_button:hover {
+  text-decoration: none;
+}
+.outlet-header-navigation .outlet-header-navigation_button:focus {
+  outline: 0;
+  box-shadow: 0;
+}
+.outlet-header-navigation .outlet-header-navigation_button .outlet-header-navigation_icon {
+  text-decoration: none;
+}
+.outlet-header-navigation .outlet-header-navigation_icon {
+  padding-right: 6px;
+}
+.outlet-header__top-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.outlet-header__top-bar .outlet-header__top-bar-title {
+  font-size: 24px;
+  color: #383842;
+}
+.outlet-header-meta-bar_item {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid #b5b5c0;
+  flex: auto;
+}
+.outlet-header-meta-bar_item .outlet-header-meta-bar_title {
+  font-weight: 500;
+  font-size: 16px;
+}
+.outlet-header-meta-bar_item .outlet-header-meta-bar_value {
+  font-size: 14px;
+}
+.outlet-header-meta-block .outlet-header-meta-block_content {
+  padding-right: 8px;
+}
+.outlet-header__actions {
+  padding-left: 12px;
+}
+.outlet-header__bottom-bar {
+  margin-bottom: 16px;
+}
+.outlet-header__bottom-bar-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.outlet-header__bottom-bat-items {
+  margin-right: 16px;
+}
+.section-header {
+  margin-bottom: 16px;
+}
+.section-header .section-header_title {
+  margin-bottom: 4px;
+}
+.section-header .section-header_title .section-header_title__text {
+  font-size: 18px;
+}
+.section-header .section-header-controls {
+  display: flex;
+  align-items: center;
+}
+.section-header .section-header-controls .section-header-controls_item {
+  padding-right: 12px;
+}
