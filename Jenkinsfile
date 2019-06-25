@@ -73,6 +73,20 @@ pipeline {
 		            }
 	             }
          }
+           stage ('build for ennterprise grafana') {
+            steps {
+            script {
+              withCredentials([usernamePassword( credentialsId: 'f8a4bba1-4ded-4234-ac07-3e7f74b7bec6', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                if (env.BRANCH_NAME == 'enterprise-mastre') {
+                sh """
+                 DOCKER_IMAGE = docker.build("${ONPREMORG}/maya-${REPO}:1.0.0-ee")
+                 ddocker login https://registry.mayadata.io -u${USERNAME} -p${PASSWORD} && docker push ${ONPREMORG}/maya-${REPO}:1.0.0-ee}
+                """
+             }
+            }    
+          }
+        }
+      }      
         stage ('Adding git-tag for prod-mo-grafana') {
             steps {
             script {
