@@ -81,7 +81,8 @@ pipeline {
                 if (env.BRANCH_NAME == 'enterprise-master') {
                 DOCKER_IMAGE = docker.build("${ONPREMORG}/maya-${REPO}:1.0.0-ee")
                 sh """
-                 docker login https://registry.mayadata.io -u${USERNAME} -p${PASSWORD} && docker push ${ONPREMORG}/maya-${REPO}:1.0.0-ee}
+                 docker login https://registry.mayadata.io -u${USERNAME} -p${PASSWORD} 
+                 docker push ${ONPREMORG}/maya-${REPO}:1.0.0-ee}
                 """
              }
             }    
