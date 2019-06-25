@@ -6,6 +6,7 @@ def CONTROL_NODE="35.225.61.42"
 def REPO = "grafana"
 def DOCKER_HUB_REPO = "https://index.docker.io/v1/"
 def DOCKER_IMAGE = ""
+def ONPREMORG = "registry.mayadata.io"
 env.user="atulabhi"
 env.pass="ka879707"
 pipeline {
