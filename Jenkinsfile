@@ -102,6 +102,19 @@ pipeline {
                 }
              }
         }
+        stage('Update baseline') {
+            steps {
+                script {
+                    Tag = sh(
+                        returnStdout: true,
+                        script: "cat image-ui"
+                        ).trim()
+                    if (env.BRANCH_NAME == 'staging') {
+                        sh "./baseline.sh ${env.BRANCH_NAME}-${GIT_SHA} ${REPO} ${env.BRANCH_NAME}"
+                    }
+                }
+            }
+        }
     } 
 
     post {
