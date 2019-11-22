@@ -106,7 +106,7 @@ pipeline {
             steps {
                 script {
                     sh "echo ${GIT_SHA}"
-                    if (env.BRANCH_NAME == 'staging') {
+                    if (env.BRANCH_NAME == 'staging-mo-grafana') {
                         sh "chmod 755 ./baseline.sh"
                         sh "./baseline.sh ${env.BRANCH_NAME}-${GIT_SHA} ${REPO} ${env.BRANCH_NAME}"
                     }
