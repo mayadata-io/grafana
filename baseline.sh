@@ -20,7 +20,7 @@ mkdir $REPO-$TAG
 
 # Get the previous directory created by baseline.sh
 PREV_REPO=$(cat baseline | awk -F',' 'NR==1{print $3}' | awk -F'=' '{print $2}')
-PREV_TAG=$(cat baseline | awk -F',' 'NR==1{print $5}' | awk -F'=' '{print $2}')
+PREV_TAG=$(cat baseline | awk -F',' 'NR==1{print $NF}' | awk -F'=' '{print $2}')
 
 # Copy the contents of the previous directory into the new directory
 cp -rf $PREV_REPO-$PREV_TAG/. $REPO-$TAG/
@@ -43,6 +43,6 @@ git add .
 
 git status
 
-git commit -m "updated $CI_PROJECT_NAME commit:$COMMIT"
+git commit -m "updated $REPO commit:$TAG"
 
 git push  git@github.com:mayadata-io/director-charts-internal.git --all
