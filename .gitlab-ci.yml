@@ -2,20 +2,47 @@
 
 stages:
   - WATCH-BUILD
-  - BASELINE
+  - TRIGGER-E2E
+
 WATCHER:
   image: atulabhi/kops:v8
   stage: WATCH-BUILD
   script:
     - chmod 755 ./watcher.sh
     - ./watcher.sh $CI_PROJECT_NAME $CI_COMMIT_REF_NAME $USERNAME $PASSWORD
-BASELINE-IMAGE:
-  stage: BASELINE
+
+# Trigger e2e pipeline for gcp
+gcp-e2e:
+  stage: TRIGGER-E2E
   only:
     - staging-mo-grafana
   image: atulabhi/kops:v8
   dependencies:
-     - WATCHER
+    - WATCHER
   script:
-     - echo "###############################################################################################"
-     - curl -X POST -F token=$GCP -F ref=$REF_NAME https://gitlab.mayadata.io/api/v4/projects/5/trigger/pipeline
+    - echo "###########################Trigger for GCP###########################"
+    - curl -X POST -F token=$GCP -F ref=$REF_NAME https://gitlab.mayadata.io/api/v4/projects/5/trigger/pipeline
+
+# Trigger e2e pipeline for konvoy
+konvoy-e2e:
+  stage: TRIGGER-E2E
+  only:
+    - staging-mo-grafana
+  image: atulabhi/kops:v8
+  dependencies:
+    - WATCHER
+  script:
+    - echo "###########################Trigger for Konvoy###########################"
+    - curl -X POST -F token=$KONVOY -F ref=$REF_NAME https://gitlab.mayadata.io/api/v4/projects/37/trigger/pipeline
+
+# Trigger e2e pipeline for rancher
+rancher-e2e:
+  stage: TRIGGER-E2E
+  only:
+    - staging-mo-grafana
+  image: atulabhi/kops:v8
+  dependencies:
+    - WATCHER
+  script:
+    - echo "###########################Trigger for Rancher###########################"
+    - curl -X POST -F token=$RANCHER -F ref=$REF_NAME https://gitlab.mayadata.io/api/v4/projects/36/trigger/pipeline
