@@ -23,8 +23,8 @@ gcp-e2e:
     - echo "###########################Trigger for GCP###########################"
     - curl -X POST -F token=$GCP -F ref=$REF_NAME https://gitlab.mayadata.io/api/v4/projects/5/trigger/pipeline
 
-# Trigger e2e pipeline for konvoy
-konvoy-e2e:
+# Trigger e2e pipeline for aws
+aws-e2e:
   stage: TRIGGER-E2E
   only:
     - staging-mo-grafana
@@ -32,17 +32,5 @@ konvoy-e2e:
   dependencies:
     - WATCHER
   script:
-    - echo "###########################Trigger for Konvoy###########################"
-    - curl -X POST -F token=$KONVOY -F ref=$REF_NAME https://gitlab.mayadata.io/api/v4/projects/37/trigger/pipeline
-
-# Trigger e2e pipeline for rancher
-rancher-e2e:
-  stage: TRIGGER-E2E
-  only:
-    - staging-mo-grafana
-  image: atulabhi/kops:v8
-  dependencies:
-    - WATCHER
-  script:
-    - echo "###########################Trigger for Rancher###########################"
-    - curl -X POST -F token=$RANCHER -F ref=$REF_NAME https://gitlab.mayadata.io/api/v4/projects/36/trigger/pipeline
+    - echo "###########################Trigger for AWS###########################"
+    - curl -X POST -F token=$AWS -F ref=$REF_NAME https://gitlab.mayadata.io/api/v4/projects/39/trigger/pipeline
