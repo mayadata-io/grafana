@@ -2,7 +2,6 @@
 
 stages:
   - WATCH-BUILD
-  - TRIGGER-E2E
 
 WATCHER:
   image: atulabhi/kops:v8
@@ -10,15 +9,3 @@ WATCHER:
   script:
     - chmod 755 ./watcher.sh
     - ./watcher.sh $CI_PROJECT_NAME $CI_COMMIT_REF_NAME $USERNAME $PASSWORD
-
-# Trigger e2e pipeline for aws
-aws-e2e:
-  stage: TRIGGER-E2E
-  only:
-    - staging-mo-grafana
-  image: atulabhi/kops:v8
-  dependencies:
-    - WATCHER
-  script:
-    - echo "###########################Trigger for AWS###########################"
-    - curl -X POST -F token=$AWS -F ref=$REF_NAME https://gitlab.mayadata.io/api/v4/projects/39/trigger/pipeline
