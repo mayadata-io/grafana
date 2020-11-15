@@ -33,7 +33,9 @@ div.flot-text {
   background-color: $panel-bg;
   border: $panel-border;
   position: relative;
-  border-radius: 3px;
+  border-radius: 6px;
+  box-shadow: $panel-box-shadow;
+  -webkit-box-shadow: $panel-box-shadow;
 
   &.panel-transparent {
     background-color: transparent;
